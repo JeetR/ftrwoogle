@@ -25,7 +25,7 @@ SECRET_KEY = '_r=&g-5kjq%nckjl&^n1e-1sp^^p13kd*ev7meslf9nef*c_t-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['ftrwoogle.herokuapp.com']
+ALLOWED_HOSTS = ['ftrwoogle.herokuapp.com','127.0.0.1']
 
 
 # Application definition
