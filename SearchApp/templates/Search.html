@@ -1,0 +1,125 @@
+<html>
+    <head>
+        <title>
+            Search Words
+        </title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    </head>
+    <style>
+        button{
+            border-radius: 10px;
+        }
+        table{
+            width: 100%;
+        }
+        h1{
+            margin-left: 40%;
+        }
+    </style>
+    <body>
+        <div id="container" class="container">
+            <div class = "row">
+                
+                <div class="col-lg-3">
+
+                </div>
+                <div id = "search-box-div" class="search-box-div col-lg-6" style="margin-top: 10%; padding: 20px;">
+                    <!-- <img src="/static/images/icon.jpg" width="80%" height="200px" style="margin-left: 10%; padding:10px;" class="img-rounded"> -->
+                    <input type="text" placeholder="Enter any Word To Search" onkeyup="search_otg()" class="form-control" style="width: 100%;" id="search_word_input">
+                    <div style="margin-left: 40%; margin-top: 2%;">
+                        <button class="btn-danger" onclick="clear_input()">Clear</button>
+                        <button class="btn-primary" onclick="search_word()">Search </button>
+                    </div>
+
+                    <div id = result-table>
+                        <h2>Results</h2>
+                        <div id="table-container">
+                            <table class="table">
+                                <tr>
+                                    <th>
+                                        Words
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+
+                    </div>
+            </div>
+        </div>
+    <script>
+        function search_otg(){
+            var word_input = document.getElementById("search_word_input");
+            // alert(word_input.value.length);
+            if(word_input.value.length>2){            
+                loadData(word_input.value);
+            }
+            else{
+                document.getElementById("table-container").innerHTML = "";
+            }
+        }
+
+        function search_word(){
+            var word_input = document.getElementById("search_word_input");
+            if(word_input.value.length>0){            
+                loadData(word_input.value);
+            }
+            else{
+                document.getElementById("table-container").innerHTML = "";
+            }
+            
+        }
+
+        function loadData(word_to_search) {
+            var search_url = window.location.href+word_to_search+"/async";
+            var http_request = new XMLHttpRequest();
+            try{
+               // Opera 8.0+, Firefox, Chrome, Safari
+               http_request = new XMLHttpRequest();
+            }catch (e) {
+               // Internet Explorer Browsers
+               try{
+                  http_request = new ActiveXObject("Msxml2.XMLHTTP");
+					
+               }catch (e) {
+				
+                  try{
+                     http_request = new ActiveXObject("Microsoft.XMLHTTP");
+                  }catch (e) {
+                     // Something went wrong
+                     alert("Your browser broke!");
+                     return false;
+                  }
+					
+               }
+            }
+			
+            http_request.onreadystatechange = function() {
+			
+               if (http_request.readyState == 4  ) {
+                  // Javascript function JSON.parse to parse JSON data
+                //   var jsonObj = JSON.parse(http_request.responseText);
+
+                  // jsonObj variable now contains the data structure and can
+                  // be accessed as jsonObj.name and jsonObj.country.
+                  document.getElementById("table-container").innerHTML = http_request.responseText;
+                  
+                //   document.getElementById("Country").innerHTML = jsonObj.country;
+               }
+            }
+			
+            http_request.open("GET", search_url, true);
+            http_request.send();
+         }
+         function clear_input(){
+            var word_input = document.getElementById("search_word_input");
+            word_input.value = "";
+            document.getElementById("table-container").innerHTML = "";
+         }
+    </script>
+    </body>
+</html>
