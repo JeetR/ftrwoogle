@@ -1,12 +1,5 @@
 import sqlite3
-
-# list = ["alpha", "maal", "taal", "alpine","alabama","markal","kalara","al"]
-# list_new = sorted(list, key=lambda x: x.startswith("al"))
-# print(list.sort(key= lambda x:x if "alpha" in x else "0")) #to remove unwanted entry
-# print(list.sort(key=lambda x: len(x),reverse=True)) # sort in increasing length
-# print(list.sort(key=lambda x: x.startswith("alpha")))
-# print(list.reverse())
-# print(list)
+from m_logger import do_logging
 
 
 def search_word(word_to_search:str):
@@ -26,6 +19,7 @@ def _get_data_from_db(word_to_search: str):
     :return: List of word after post processing all the constraints
     """
     try:
+        word_to_search = word_to_search.lower()
         query_search = "Select word from Words where word LIKE '%" + word_to_search + "%' ORDER BY word_count DESC;"
         conn = sqlite3.connect("word_search.db") # get connection for the given db
         conn.row_factory = lambda cursor, row: row[0] # change cursor to fetch result without tuples
@@ -36,7 +30,7 @@ def _get_data_from_db(word_to_search: str):
         # print(result_list)
         return _post_processing(result_list, word_to_search)
     except Exception as e:
-
+        do_logging(e)
         return [] # return empty list if any exception is raised
 
 
